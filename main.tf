@@ -5,6 +5,8 @@ locals {
   # If var.storage_autoscaling_max_capacity is not set, don't autoscale past current size
   broker_volume_size_max = coalesce(var.storage_autoscaling_max_capacity, var.broker_volume_size)
 
+  kafka_version_for_cluster_config = length(var.kafka_version_on_config) > 0 ? var.kafka_version_on_config : var.kafka_version
+
   # var.client_broker types
   plaintext     = "PLAINTEXT"
   tls_plaintext = "TLS_PLAINTEXT"
@@ -94,7 +96,7 @@ module "broker_security_group" {
 
 resource "aws_msk_configuration" "config" {
   count          = local.enabled ? 1 : 0
-  kafka_versions = [var.kafka_version]
+  kafka_versions = [local.kafka_version_for_cluster_config]
   name           = module.this.id
   description    = "Manages an Amazon Managed Streaming for Kafka configuration"
 

@@ -3,6 +3,12 @@ variable "kafka_version" {
   description = "The desired Kafka software version"
 }
 
+variable "kafka_version_on_config" {
+  type        = string
+  description = "The desired Kafka software version"
+  default     = ""
+}
+
 variable "broker_instance_type" {
   type        = string
   description = "The instance type to use for the Kafka brokers"
